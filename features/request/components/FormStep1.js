@@ -1,4 +1,4 @@
-import { X, ArrowRight } from "lucide-react";
+import { X, ArrowRight, Plus, Paperclip } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,8 +14,9 @@ import {
 export default function FormStep1({
   values,
   onChange,
-  onFileChange,
-  fileName,
+  attachments,
+  onAddAttachmentClick,
+  onRemoveAttachment,
   isValid,
   onCancel,
   onNext,
@@ -143,14 +144,44 @@ export default function FormStep1({
           className="text-xs"
         />
 
-        <div className="flex items-center gap-0 border border-gray-200 rounded-md overflow-hidden bg-gray-100">
-          <label className="px-3.5 py-2 bg-white hover:bg-gray-50 border-r border-gray-200 text-sm font-medium text-gray-700 cursor-pointer shrink-0">
-            Choose a file
-            <input type="file" onChange={onFileChange} className="hidden" />
-          </label>
-          <span className="text-sm text-gray-900 px-3.5 w-full truncate">
-            {fileName}
-          </span>
+        <div className="space-y-2">
+          {attachments.length > 0 && (
+            <ul className="space-y-2">
+              {attachments.map((att, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-center justify-between gap-2 border border-gray-200 rounded-md px-3 py-2 text-sm"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Paperclip className="w-4 h-4 text-gray-400 shrink-0" />
+                    <span className="truncate text-gray-700">{att.title}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onRemoveAttachment(idx)}
+                    className="text-gray-400 hover:text-rose-500 shrink-0"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={onAddAttachmentClick}
+            disabled={attachments.length >= 5}
+            className="border-solid w-full justify-center rounded-sm cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            Upload Attachment
+          </Button>
+          {attachments.length >= 5 && (
+            <p className="text-xs text-gray-400">Maksimal 5 file.</p>
+          )}
         </div>
       </div>
 

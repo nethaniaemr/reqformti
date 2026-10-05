@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StatusBadge from "./StatusBadge";
+import Image from "next/image";
 
 function getInitials(name) {
   const afterDash = name.includes("-") ? name.split("-")[1] : name;
@@ -9,13 +9,12 @@ function getInitials(name) {
     .map((word) => word[0])
     .slice(0, 2)
     .join("")
-    .toUpperCase();
 }
 
 function InfoItem({ label, children }) {
   return (
     <div>
-      <span className="text-gray-400 text-xs uppercase font-semibold tracking-wider block mb-1">
+      <span className="text-gray-400 text-xs font-medium block mb-1">
         {label}
       </span>
       {children}
@@ -25,36 +24,54 @@ function InfoItem({ label, children }) {
 
 export default function TicketInfoCard({ item }) {
   return (
-    <Card>
-      <CardHeader className="flex-row items-center justify-between border-b border-gray-100 pb-4">
-        <CardTitle className="text-sm font-bold text-gray-900">
-          Informasi Tiket & Pemohon
-        </CardTitle>
-        <StatusBadge status={item.status} />
-      </CardHeader>
+    <div className="p-5 sm:p-6">
+      <h3 className="text-sm font-semibold text-gray-900 mb-4">
+        Informasi Order
+      </h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5 text-sm">
+        <InfoItem label="Nama Pekerjaan">
+          <span className="text-gray-900">{item.title}</span>
+        </InfoItem>
 
-      <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
         <InfoItem label="Nomor Tiket">
-          <span className="font-bold text-gray-900">#{item.id}</span>
+          <span className="font-base text-gray-800">#{item.id}</span>
         </InfoItem>
 
-        <InfoItem label="Tanggal Pengajuan">
-          <span className="font-medium text-gray-800">{item.date}</span>
+        <InfoItem label="Tanggal Inisiasi">
+          <span className="font-base text-gray-800">{item.date}</span>
         </InfoItem>
 
-        <InfoItem label="Pemohon">
+        <InfoItem label="Pengusul">
           <div className="flex items-center gap-2 mt-1">
-            <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-[10px] font-bold shrink-0">
-              {getInitials(item.name)}
+            {item.profilePic ? (
+              <Image
+                src={item.profilePic}
+                alt={item.name}
+                width={28}
+                height={28}
+                className="w-7 h-7 rounded-full object-cover shrink-0"
+              />
+            ) : (
+              <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-[10px] font-bold shrink-0">
+                {getInitials(item.name)}
+              </span>
+            )}
+
+            <span className="font-medium text-gray-900">
+              {item.name}
+              <span className="text-gray-400 ml-1 font-normal">({item.badge})</span>
             </span>
-            <span className="font-bold text-gray-900">{item.name}</span>
           </div>
         </InfoItem>
 
         <InfoItem label="Unit Kerja / Departemen">
-          <span className="font-medium text-gray-800">{item.dept}</span>
+          <span className="font-base text-gray-800">{item.dept}</span>
         </InfoItem>
-      </CardContent>
-    </Card>
+
+        <InfoItem label="Status">
+          <StatusBadge status={item.status} />
+        </InfoItem>
+      </div>
+    </div>
   );
 }

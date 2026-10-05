@@ -10,6 +10,7 @@ import FormStepIndicator from "@/features/request/components/FormStepIndicator";
 import FormStep1 from "@/features/request/components/FormStep1";
 import FormStep2 from "@/features/request/components/FormStep2";
 import SaveDraft from "@/features/request/components/SaveDraft";
+import AttachmentDialog from "@/features/request/components/AttachmentDialog";
 import ConfirmSubmitDialog from "@/features/request/components/ConfirmSubmitDialog";
 import { ROUTES } from "@/config/routes";
 
@@ -27,11 +28,12 @@ export default function CreateRequestPage() {
 
   const [step, setStep] = useState(1);
   const [values, setValues] = useState(EMPTY_VALUES);
-  const [fileName, setFileName] = useState("No file choosen");
   const [selectedThemes, setSelectedThemes] = useState({});
   const [noItmpMatch, setNoItmpMatch] = useState(false);
   const [showSaveDraft, setShowSaveDraft] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [attachments, setAttachments] = useState([]);
+  const [attachmentDialogOpen, setAttachmentDialogOpen] = useState(false);
 
   const isStep1Valid = Object.values(values).every((v) => v.trim() !== "");
 
@@ -39,10 +41,12 @@ export default function CreateRequestPage() {
     setValues((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFileName(e.target.files[0].name);
-    }
+  const handleAddAttachment = (newItems) => {
+    setAttachments((prev) => [...prev, ...newItems]);
+  };
+
+  const handleRemoveAttachment = (idx) => {
+    setAttachments((prev) => prev.filter((_, i) => i !== idx));
   };
 
   const handleToggleTheme = (themeName) => {
@@ -60,7 +64,12 @@ export default function CreateRequestPage() {
   };
 
   const handleConfirmSubmit = () => {
-    console.log("submit", { ...values, fileName, selectedThemes, noItmpMatch });
+    console.log("submit", {
+      ...values,
+      attachments,
+      selectedThemes,
+      noItmpMatch,
+    });
     setConfirmOpen(false);
     router.push(ROUTES.request);
   };
@@ -122,8 +131,9 @@ export default function CreateRequestPage() {
         <FormStep1
           values={values}
           onChange={handleChange}
-          onFileChange={handleFileChange}
-          fileName={fileName}
+          attachments={attachments}
+          onAddAttachmentClick={() => setAttachmentDialogOpen(true)}
+          onRemoveAttachment={handleRemoveAttachment}
           isValid={isStep1Valid}
           onCancel={() => router.push(ROUTES.request)}
           onNext={() => setStep(2)}
@@ -142,6 +152,12 @@ export default function CreateRequestPage() {
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
         onConfirm={handleConfirmSubmit}
+      />
+      <AttachmentDialog
+        open={attachmentDialogOpen}
+        onOpenChange={setAttachmentDialogOpen}
+        existingCount={attachments.length}
+        onAdd={handleAddAttachment}
       />
     </div>
   );
