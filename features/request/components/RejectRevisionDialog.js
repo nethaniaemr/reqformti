@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { X, Pencil } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -23,10 +24,10 @@ export default function RejectRevisionDialog({
 
   const isRevision = variant === "revisi";
 
-  const title = isRevision ? "Minta Revisi Permintaan?" : "Tolak Review";
+  const title = isRevision ? "Minta Revisi" : "Tolak Review";
 
   const description = isRevision
-    ? "Tuliskan catatan perbaikan yang perlu dilakukan oleh pemohon."
+    ? `Request Order #${item.id}`
     : `Request Order #${item.id}`;
 
   const handleSubmit = () => {
@@ -56,7 +57,7 @@ export default function RejectRevisionDialog({
             htmlFor="review-note"
             className="text-sm font-medium text-gray-900 mb-2 block"
           >
-            Alasan Penolakan
+            {isRevision ? "Catatan Revisi (Wajib)" : "Alasan Penolakan"}
           </label>
 
           <Textarea
@@ -65,7 +66,7 @@ export default function RejectRevisionDialog({
             onChange={(event) => setNote(event.target.value)}
             placeholder={
               isRevision
-                ? "Tuliskan bagian yang perlu diperbaiki..."
+                ? "Tuliskan bagian yang perlu direvisi..."
                 : "Tuliskan alasan penolakan..."
             }
             rows={4}
@@ -89,11 +90,16 @@ export default function RejectRevisionDialog({
             disabled={!note.trim()}
             className={`w-full cursor-pointer sm:w-auto ${
               isRevision
-                ? ""
+                ? "bg-amber-100 text-amber-700 hover:bg-amber-200 hover:text-amber-800 disabled:opacity-100"
                 : "bg-rose-50 text-rose-700 hover:bg-red-100 hover:text-rose-800 disabled:opacity-100"
             }`}
           >
-            {isRevision ? "Kirim Revisi" : "Tolak"}
+            {isRevision ? (
+              <Pencil className="size-4 shrink-0" />
+            ) : (
+              <X className="size-4 shrink-0" />
+            )}
+            {isRevision ? "Minta Revisi" : "Tolak"}
           </Button>
         </DialogFooter>
       </DialogContent>

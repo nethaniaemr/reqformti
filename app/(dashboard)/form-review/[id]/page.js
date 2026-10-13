@@ -16,10 +16,9 @@ import AssessmentCard from "@/features/request/components/AssessmentCard";
 import AttachmentList from "@/features/request/components/AttachmentList";
 import ActivityTimeline from "@/features/request/components/ActivityTimeline";
 import ReviewActionBanner from "@/features/request/components/ReviewActionBanner";
-import RejectRevisionDialog from "@/features/request/components/RejectRevisionDialog";
-import ApproveConfirmDialog from "@/features/request/components/ApproveConfirmDialog";
 import { ROUTES } from "@/config/routes";
 import DownloadPdfButton from "@/features/request/components/DownloadPdfButton";
+import ActionDialog from "@/features/request/components/ActionDialog";
 
 export default function ReviewDetailPage() {
   const { id } = useParams();
@@ -91,23 +90,21 @@ export default function ReviewDetailPage() {
         </div>
       </div>
 
-      <RejectRevisionDialog
+      <ActionDialog
+        open={dialog !== null}
+        onOpenChange={(open) => !open && setDialog(null)}
+        variant={dialog}
         item={item}
-        open={dialog === "tolak" || dialog === "revisi"}
-        onOpenChange={(open) => !open && setDialog(null)}
-        variant={dialog === "revisi" ? "revisi" : "tolak"}
         onSubmit={(note) => {
-          if (dialog === "tolak") finish("Ditolak", "Ditolak", "info", note);
-          else finish("Perlu Revisi", "Perlu Revisi", "info", note);
+          if (dialog === "tolak") {
+            finish("Ditolak", "Ditolak", "info", note);
+          } else if (dialog === "revisi") {
+            finish("Perlu Revisi", "Perlu Revisi", "info", note);
+          }
         }}
-      />
-
-      <ApproveConfirmDialog
-        open={dialog === "setuju"}
-        onOpenChange={(open) => !open && setDialog(null)}
-        title="Setujui permintaan ini?"
-        description="Permintaan akan disetujui dan dilanjutkan ke proses pengembangan."
-        onConfirm={() => finish("Disetujui", "Order disetujui", "info")}
+        onConfirm={() => {
+          finish("Menunggu Persetujuan", "Review disetujui", "info");
+        }}
       />
     </div>
   );

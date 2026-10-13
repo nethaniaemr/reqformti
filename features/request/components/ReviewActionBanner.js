@@ -29,7 +29,7 @@ export default function ReviewActionBanner({
           className="w-full cursor-pointer bg-rose-50 text-rose-700 hover:bg-red-100 hover:text-rose-800 sm:w-auto"
         >
           <X className=" size-4 shrink-0" />
-          Reject
+          Tolak
         </Button>
 
         <Button

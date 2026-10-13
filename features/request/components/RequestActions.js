@@ -16,8 +16,6 @@ const CANCELABLE_STATUSES = [
   "Perlu Revisi",
 ];
 
-<DownloadPdfButton item={item} />
-
 export default function RequestActions({ item }) {
   const router = useRouter();
   const [cancelOpen, setCancelOpen] = useState(false);
