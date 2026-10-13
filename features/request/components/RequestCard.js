@@ -15,17 +15,19 @@ function getInitials(name) {
     .toUpperCase();
 }
 
-export default function RequestCard({ item }) {
+export default function RequestCard({ item, basePath = ROUTES.request }) {
   return (
-    <Link href={ROUTES.requestDetail(item.id)} className="block">
+    <Link href={`${basePath}/${item.id}`} className="block">
       <Card className="hover:bg-gray-50 transition-colors cursor-pointer">
         <CardContent className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-400">#{item.id}</span>
+            <span className="text-sm text-gray-400">#{item.ticketNumber}</span>
             <StatusBadge status={item.status} />
           </div>
 
-          <h3 className="text-sm font-semibold text-gray-900 truncate">{item.title}</h3>
+          <h3 className="text-sm font-semibold text-gray-900 truncate">
+            {item.title}
+          </h3>
 
           <p className="text-sm text-gray-500 -mt-1.5">{item.category}</p>
 

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FolderCode, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Breadcrumb from "@/components/layout/Breadcrumb";
+import PageHeader from "@/components/layout/PageHeader";
 import {
   Empty,
   EmptyContent,
@@ -13,7 +14,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import RequestPagination from "@/components/ui/RequestPagination";
+import PaginationAll from "@/components/ui/PaginationAll";
 import { ROUTES } from "@/config/routes";
 import { mockRequests } from "@/features/request/data/mock-requests";
 import { EMPTY_FILTERS, applyFilters } from "@/features/request/filters";
@@ -42,33 +43,21 @@ export default function FormRequestPage() {
 
   return (
     <div className="py-6 px-4 sm:px-8 w-full space-y-6">
-      <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
-        <div className="contents md:block">
-          <div>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
-              Form Request
-            </h2>
-
-            <p className="text-sm text-gray-500 mt-1">
-              Sistem Permintaan & Pengembangan Aplikasi TI - Ajukan dan kelola
-              permintaan aplikasi TI unit kerja Anda
-            </p>
-          </div>
-
-          <div className="order-3 md:order-none mt-5">
-            <Breadcrumb items={[{ label: "Form Request" }]} />
-          </div>
-        </div>
-
-        <Button
-          render={<Link href={ROUTES.requestCreate} />}
-          nativeButton={false}
-          className="w-full md:w-auto bg-primary hover:bg-primary/90 shrink-0 order-2 md:order-none"
-        >
-          <Plus className="w-5 h-5" />
-          Create Request
-        </Button>
-      </div>
+      <PageHeader
+        title="Form Request"
+        description="Sistem Permintaan & Pengembangan Aplikasi TI - Ajukan dan kelola permintaan aplikasi TI unit kerja Anda"
+        breadcrumb={<Breadcrumb items={[{ label: "Form Request" }]} />}
+        action={
+          <Button
+            render={<Link href={ROUTES.requestCreate} />}
+            nativeButton={false}
+            className="w-full md:w-auto bg-primary hover:bg-primary/90"
+          >
+            <Plus className="w-4 h-4" />
+            Create Request
+          </Button>
+        }
+      />
 
       <h3 className="text-base font-semibold text-gray-900 mb-2">
         Your Requests
@@ -80,6 +69,7 @@ export default function FormRequestPage() {
         viewMode={viewMode}
         onViewModeChange={setViewMode}
         onExportClick={() => setExportOpen(true)}
+        showStatusFilter
       />
 
       {filtered.length === 0 ? (
@@ -122,7 +112,7 @@ export default function FormRequestPage() {
         </div>
       )}
 
-      <RequestPagination
+      <PaginationAll
         page={page}
         totalPages={totalPages}
         totalItems={filtered.length}

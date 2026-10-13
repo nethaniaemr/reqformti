@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Download, X } from "lucide-react";
 import {
   Dialog,
@@ -29,26 +30,43 @@ const STATUS_OPTIONS = Object.keys(STATUS_META).map((s) => ({
 
 export default function ExportDialog({ open, onOpenChange, items }) {
   const [exportFilters, setExportFilters] = useState(EMPTY_EXPORT_FILTERS);
+
   const setField = (key) => (value) =>
-    setExportFilters((prev) => ({ ...prev, [key]: value }));
+    setExportFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
 
   const matched = applyExportFilters(items, exportFilters);
 
-  const handleClose = (nextOpen) => {
-    if (!nextOpen) setExportFilters(EMPTY_EXPORT_FILTERS);
-    onOpenChange(nextOpen);
-  };
-
   const handleExport = () => {
-    exportRequestsToExcel(matched);
-    handleClose(false);
+    if (matched.length === 0) {
+      toast.error("Tidak ada data yang sesuai dengan filter.");
+      return;
+    }
+
+    const success = exportRequestsToExcel(matched, "formrequest-export");
+
+    if (success) {
+      setTimeout(() => {
+        toast.success("File berhasil di-export.");
+        handleClose(false);
+      }, 1000);
+    } else {
+      toast.error("Gagal melakukan export file. Silakan coba lagi.");
+    }
   };
 
+  const handleClose = (value) => {
+    setExportFilters(EMPTY_EXPORT_FILTERS);
+    onOpenChange(value);
+  };
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="w-[calc(100%-2rem)] sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Export Data Permintaan</DialogTitle>
+
           <DialogDescription>
             Pilih filter untuk menentukan data yang akan di-export ke Excel.
             Kosongkan semua filter untuk mengexport seluruh data.
@@ -60,6 +78,7 @@ export default function ExportDialog({ open, onOpenChange, items }) {
             <p className="text-xs font-medium tracking-wider text-gray-400">
               Filter
             </p>
+
             {hasActiveExportFilters(exportFilters) && (
               <Button
                 variant="ghost"
@@ -80,6 +99,7 @@ export default function ExportDialog({ open, onOpenChange, items }) {
               value={exportFilters.status}
               onChange={setField("status")}
             />
+
             <SelectFilter
               label="Jenis Pengembangan"
               options={JENIS_PENGEMBANGAN_OPTIONS}
@@ -87,11 +107,13 @@ export default function ExportDialog({ open, onOpenChange, items }) {
               onChange={setField("jenis")}
               width="w-72"
             />
+
             <DateFilter
               label="Dari Tanggal"
               value={exportFilters.dateFrom}
               onChange={setField("dateFrom")}
             />
+
             <DateFilter
               label="Sampai Tanggal"
               value={exportFilters.dateTo}
@@ -108,6 +130,7 @@ export default function ExportDialog({ open, onOpenChange, items }) {
           >
             Cancel
           </Button>
+
           <Button
             onClick={handleExport}
             className="w-full sm:w-auto bg-primary hover:bg-primary/90"

@@ -9,10 +9,22 @@ import { STATUS_META } from "@/config/status";
 import { JENIS_PENGEMBANGAN_OPTIONS } from "../constants";
 import { EMPTY_FILTERS, hasActiveFilters } from "../filters";
 
-const STATUS_OPTIONS = Object.keys(STATUS_META).map((s) => ({ value: s, label: s }));
+const STATUS_OPTIONS = Object.keys(STATUS_META).map((s) => ({
+  value: s,
+  label: s,
+}));
 
-export default function FilterToolbar({ filters, onFiltersChange, viewMode, onViewModeChange, onExportClick }) {
-  const setField = (key) => (value) => onFiltersChange({ ...filters, [key]: value });
+export default function FilterToolbar({
+  filters,
+  onFiltersChange,
+  viewMode,
+  onViewModeChange,
+  onExportClick,
+  showStatusFilter,
+  hideExport = false,
+}) {
+  const setField = (key) => (value) =>
+    onFiltersChange({ ...filters, [key]: value });
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -27,14 +39,27 @@ export default function FilterToolbar({ filters, onFiltersChange, viewMode, onVi
           />
         </div>
 
-        <DateFilter label="Tanggal Inisiasi" value={filters.date} onChange={setField("date")} />
-
-        <SelectFilter
-          label="Status"
-          options={STATUS_OPTIONS}
-          value={filters.status}
-          onChange={setField("status")}
+        <DateFilter
+          label="Tanggal Inisiasi"
+          from={filters.dateFrom}
+          to={filters.dateTo}
+          onChange={({ from, to }) =>
+            onFiltersChange({
+              ...filters,
+              dateFrom: from,
+              dateTo: to,
+            })
+          }
         />
+
+        {showStatusFilter && (
+          <SelectFilter
+            label="Status"
+            options={STATUS_OPTIONS}
+            value={filters.status}
+            onChange={setField("status")}
+          />
+        )}
 
         <SelectFilter
           label="Jenis Pengembangan"
@@ -45,7 +70,11 @@ export default function FilterToolbar({ filters, onFiltersChange, viewMode, onVi
         />
 
         {hasActiveFilters(filters) && (
-          <Button variant="ghost" size="sm" onClick={() => onFiltersChange(EMPTY_FILTERS)}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onFiltersChange(EMPTY_FILTERS)}
+          >
             <X className="w-4 h-4" />
             Reset
           </Button>
@@ -57,7 +86,9 @@ export default function FilterToolbar({ filters, onFiltersChange, viewMode, onVi
           <button
             onClick={() => onViewModeChange("grid")}
             className={`p-1.5 rounded transition-colors cursor-pointer ${
-              viewMode === "grid" ? "bg-gray-100 text-gray-900" : "text-gray-400"
+              viewMode === "grid"
+                ? "bg-gray-100 text-gray-900"
+                : "text-gray-400"
             }`}
           >
             <LayoutGrid className="w-4 h-4" />
@@ -65,16 +96,20 @@ export default function FilterToolbar({ filters, onFiltersChange, viewMode, onVi
           <button
             onClick={() => onViewModeChange("list")}
             className={`p-1.5 rounded transition-colors cursor-pointer ${
-              viewMode === "list" ? "bg-gray-100 text-gray-900" : "text-gray-400"
+              viewMode === "list"
+                ? "bg-gray-100 text-gray-900"
+                : "text-gray-400"
             }`}
           >
             <List className="w-4 h-4" />
           </button>
         </div>
-        <Button variant="outline" onClick={onExportClick} className="cursor-pointer">
-          <Download className="w-4 h-4" />
-          Export
-        </Button>
+        {!hideExport && (
+          <Button variant="outline" onClick={onExportClick}>
+            <Download className="w-4 h-4" />
+            Export
+          </Button>
+        )}
       </div>
     </div>
   );

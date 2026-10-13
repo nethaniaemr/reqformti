@@ -68,7 +68,7 @@ function EmptyTitle({
     <div
       data-slot="empty-title"
       className={cn(
-        "font-heading text-sm font-medium tracking-tight",
+        "font-heading text-base font-medium tracking-tight",
         className
       )}
       {...props}

@@ -9,7 +9,7 @@ export default function ProposalCard({ item }) {
     <div>
       <div className="px-5 sm:px-6 pt-5 sm:pt-6 pb-4">
         <h3 className="text-sm font-semibold text-gray-900">
-          Detail Pekerjaan
+          Detail Request
         </h3>
       </div>
 
@@ -34,52 +34,48 @@ export default function ProposalCard({ item }) {
                 >
                   <Checkbox checked={isSelected} disabled />
 
-                  <span className="text-sm text-gray-800">
-                    {opt.label}
-                  </span>
+                  <span className="text-sm text-gray-800">{opt.label}</span>
                 </div>
               );
             })}
           </div>
         </div>
-
         <DetailField
-          label="Nama Usulan Aplikasi"
+          label="Nama Aplikasi"
           value={item.title}
           valueClassName="font-semibold text-gray-900"
         />
-
         <DetailField
           label="Latar Belakang / Permasalahan"
           value={item.latarBelakang}
           valueClassName="text-gray-900"
         />
-
+        <DetailField
+          label="Gambaran Umum / Ruang Lingkup Aplikasi"
+          value={item.gambaranUmum}
+          valueClassName="text-gray-900"
+        />
         <DetailField
           label="Cost & Benefit"
           value={item.costBenefit}
           valueClassName="text-gray-900"
         />
-
         <DetailField
           label="Risiko Jika Tidak Dibuat"
           value={item.risiko}
           valueClassName="text-gray-900"
         />
-
-        {pilar && (
+        {item.theme && (
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-gray-400 block">
               Tema IT Master Plan PI Grup 2025 - 2029 Yang Dipilih
             </label>
 
             <div className="p-3.5 bg-gray-50 rounded text-sm space-y-1">
-              <div className="font-bold text-primary text-xs">
-                {pilar}
-              </div>
+              <div className="font-semibold text-primary text-xs">{pilar}</div>
 
               {program.map((name) => (
-                <div key={name} className="text-gray-700 font-medium">
+                <div key={name} className="text-gray-900 font-normal">
                   {name}
                 </div>
               ))}

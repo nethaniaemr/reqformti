@@ -11,10 +11,19 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-export default function ComboboxField({ options, value, onChange, placeholder = "Pilih..." }) {
+export default function ComboboxField({
+  options,
+  value,
+  onChange,
+  placeholder = "Pilih...",
+}) {
   const [open, setOpen] = useState(false);
   const [triggerWidth, setTriggerWidth] = useState(0);
   const wrapperRef = useRef(null);
@@ -22,7 +31,8 @@ export default function ComboboxField({ options, value, onChange, placeholder = 
 
   useEffect(() => {
     const measure = () => {
-      if (wrapperRef.current) setTriggerWidth(wrapperRef.current.getBoundingClientRect().width);
+      if (wrapperRef.current)
+        setTriggerWidth(wrapperRef.current.getBoundingClientRect().width);
     };
     measure();
 
@@ -35,9 +45,19 @@ export default function ComboboxField({ options, value, onChange, placeholder = 
     <Popover open={open} onOpenChange={setOpen}>
       <div ref={wrapperRef} className="w-full">
         <PopoverTrigger
-          render={<Button variant="outline" className="w-full justify-between font-normal" />}
+          render={
+            <Button
+              variant="outline"
+              className="w-full justify-between font-normal"
+            />
+          }
         >
-          <span className={cn("truncate", selected ? "text-gray-800" : "text-gray-400")}>
+          <span
+            className={cn(
+              "truncate",
+              selected ? "text-gray-800" : "text-gray-400",
+            )}
+          >
             {selected ? selected.label : placeholder}
           </span>
           <ChevronsUpDown className="w-4 h-4 text-gray-400 shrink-0" />
@@ -64,7 +84,9 @@ export default function ComboboxField({ options, value, onChange, placeholder = 
                       setOpen(false);
                     }}
                   >
-                    <Check className={`w-4 h-4 ${isSelected ? "opacity-100" : "opacity-0"}`} />
+                    <Check
+                      className={`w-4 h-4 ${isSelected ? "opacity-100" : "opacity-0"}`}
+                    />
                     {opt.label}
                   </CommandItem>
                 );

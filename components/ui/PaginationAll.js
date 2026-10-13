@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/pagination";
 import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from "lucide-react";
 
-export default function RequestPagination({
+export default function PaginationAll({
   page,
   totalPages,
   totalItems,

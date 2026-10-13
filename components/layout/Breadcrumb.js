@@ -1,38 +1,84 @@
-import Link from "next/link";
+"use client";
+
+import { usePathname } from "next/navigation";
 import {
-  Breadcrumb as BreadcrumbRoot,
-  BreadcrumbList,
+  Breadcrumb as BreadcrumbUI,
   BreadcrumbItem,
   BreadcrumbLink,
+  BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { ROUTES } from "@/config/routes";
 
-export default function Breadcrumb({ items }) {
+export default function Breadcrumb({ detailLabel }) {
+  const pathname = usePathname();
+
+  const items = [];
+
+  if (pathname.startsWith("/form-request")) {
+    items.push({
+      label: "Form Request",
+      href: "/form-request",
+    });
+
+    if (pathname === "/form-request/create") {
+      items.push({
+        label: "Create Request",
+      });
+    } else if (pathname !== "/form-request") {
+      items.push({
+        label: detailLabel || "Detail Request",
+      });
+    }
+  } else if (pathname.startsWith("/form-review")) {
+    items.push({
+      label: "Form Review",
+      href: "/form-review",
+    });
+
+    if (pathname !== "/form-review") {
+      items.push({
+        label: detailLabel || "Detail Review",
+      });
+    }
+  } else if (pathname.startsWith("/form-approve")) {
+    items.push({
+      label: "Form Approve",
+      href: "/form-approve",
+    });
+
+    if (pathname !== "/form-approve") {
+      items.push({
+        label: detailLabel || "Detail Approval",
+      });
+    }
+  }
+
   return (
-    <BreadcrumbRoot>
+    <BreadcrumbUI>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink render={<Link href={ROUTES.request} />}>Beranda</BreadcrumbLink>
+          <BreadcrumbLink href="/">Beranda</BreadcrumbLink>
         </BreadcrumbItem>
 
         {items.map((item, idx) => {
           const isLast = idx === items.length - 1;
+
           return (
             <span key={idx} className="contents">
               <BreadcrumbSeparator />
+
               <BreadcrumbItem>
                 {isLast || !item.href ? (
                   <BreadcrumbPage>{item.label}</BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink render={<Link href={item.href} />}>{item.label}</BreadcrumbLink>
+                  <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
                 )}
               </BreadcrumbItem>
             </span>
           );
         })}
       </BreadcrumbList>
-    </BreadcrumbRoot>
+    </BreadcrumbUI>
   );
 }

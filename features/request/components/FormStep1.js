@@ -84,7 +84,14 @@ export default function FormStep1({
       <div className="space-y-1.5">
         <Label htmlFor="namaAplikasi">Nama Aplikasi</Label>
 
-        {jenisPengembangan === JENIS_ENHANCEMENT ? (
+        {jenisPengembangan === "" ? (
+          <>
+            <p className="text-sm text-gray-500">
+              Pilih jenis pengembangan terlebih dahulu.
+            </p>
+            <Input disabled placeholder="" />
+          </>
+        ) : jenisPengembangan === JENIS_ENHANCEMENT ? (
           <>
             <p className="text-sm text-gray-500">
               Pilih aplikasi eksisting yang akan dikembangkan.
@@ -107,7 +114,7 @@ export default function FormStep1({
                 placeholder="Contoh: ETOS (Engineering Task & Order System)"
                 value={namaAplikasi}
                 onChange={(e) => onChange("namaAplikasi", e.target.value)}
-                className="pl-2.5 text-xs"
+                className="pl-2.5"
               />
             </div>
           </>

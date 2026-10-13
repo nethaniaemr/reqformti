@@ -6,8 +6,7 @@ export const JENIS_PENGEMBANGAN_OPTIONS = [
   { value: JENIS_ENHANCEMENT, label: "Enhancement Aplikasi Eksisting" },
 ];
 
-// SEMENTARA: daftar aplikasi eksisting untuk dropdown enhancement.
-// Nanti diganti query ke database.
+// daftar apk eksisting sementara
 export const EXISTING_APPLICATIONS = [
   "ETOS (Engineering Task & Order System)",
   "BIOS (Barang Inventaris & Office Supplies)",
@@ -16,7 +15,7 @@ export const EXISTING_APPLICATIONS = [
   "Nutriku",
 ];
 
-// Tema IT Master Plan PI Group 2025-2029, dikelompokkan per pilar.
+// tema ITMP 
 export const ITMP_PILARS = [
   {
     id: 1,

@@ -27,12 +27,12 @@ export default function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-1.5">
+        <div className="flex items-center gap-2 py-1.5">
           <span className="w-8 h-8 rounded-md bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">
-            IT
+            ..
           </span>
-          <span className="font-bold text-sm text-gray-900 group-data-[collapsible=icon]:hidden">
-            IT Request
+          <span className="text-xl font-bold tracking-tight group-data-[collapsible=icon]:hidden">
+            ...
           </span>
         </div>
       </SidebarHeader>
@@ -44,14 +44,15 @@ export default function AppSidebar() {
               {MENU_ITEMS.map(({ label, href, icon: Icon }) => {
                 const isActive = pathname?.startsWith(href);
                 return (
-                  <SidebarMenuItem key={href} >
+                  <SidebarMenuItem key={href}>
                     <SidebarMenuButton
                       render={<Link href={href} />}
                       isActive={isActive}
                       tooltip={label}
                       className={
-                        isActive ? "!bg-primary !font-semibold !text-primary-foreground !rounded-sm !py-5 mt-2" : 
-                        "rounded-sm py-5 mt-2"
+                        isActive
+                          ? "!bg-primary !font-semibold !text-primary-foreground !rounded-sm !py-5 mt-2"
+                          : "rounded-sm py-5 mt-2"
                       }
                     >
                       <Icon className="w-3 h-3" />

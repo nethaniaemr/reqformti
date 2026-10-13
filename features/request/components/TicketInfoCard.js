@@ -8,13 +8,13 @@ function getInitials(name) {
     .split(" ")
     .map((word) => word[0])
     .slice(0, 2)
-    .join("")
+    .join("");
 }
 
 function InfoItem({ label, children }) {
   return (
     <div>
-      <span className="text-gray-400 text-xs font-medium block mb-1">
+      <span className="text-gray-400 text-sm font-medium block mb-1">
         {label}
       </span>
       {children}
@@ -29,19 +29,11 @@ export default function TicketInfoCard({ item }) {
         Informasi Order
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5 text-sm">
-        <InfoItem label="Nama Pekerjaan">
-          <span className="text-gray-900">{item.title}</span>
-        </InfoItem>
-
         <InfoItem label="Nomor Tiket">
-          <span className="font-base text-gray-800">#{item.id}</span>
+          <span className="font-base text-gray-800">#{item.ticketNumber}</span>
         </InfoItem>
 
-        <InfoItem label="Tanggal Inisiasi">
-          <span className="font-base text-gray-800">{item.date}</span>
-        </InfoItem>
-
-        <InfoItem label="Pengusul">
+        <InfoItem label="Pemohon">
           <div className="flex items-center gap-2 mt-1">
             {item.profilePic ? (
               <Image
@@ -59,17 +51,23 @@ export default function TicketInfoCard({ item }) {
 
             <span className="font-medium text-gray-900">
               {item.name}
-              <span className="text-gray-400 ml-1 font-normal">({item.badge})</span>
+              <span className="text-gray-400 ml-1 font-normal">
+                ({item.badge})
+              </span>
             </span>
           </div>
         </InfoItem>
 
-        <InfoItem label="Unit Kerja / Departemen">
-          <span className="font-base text-gray-800">{item.dept}</span>
-        </InfoItem>
-
         <InfoItem label="Status">
           <StatusBadge status={item.status} />
+        </InfoItem>
+
+        <InfoItem label="Tanggal Inisiasi">
+          <span className="font-base text-gray-800">{item.date}</span>
+        </InfoItem>
+
+        <InfoItem label="Unit Kerja / Departemen">
+          <span className="font-base text-gray-800">{item.dept}</span>
         </InfoItem>
       </div>
     </div>
